@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Trainer Registration</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff8dc; /* light cream */
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #ffffff;
+      border: 2px solid #ffcb05; /* Pikachu yellow */
+      border-radius: 10px;
+      padding: 15px 20px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #e3350d; /* PokéRed */
+    }
+    h2 {
+      text-align: center;
+      color: #3b4cca; /* PokéBlue */
+    }
+    label {
+      display: block;
+      margin: 8px 0 4px;
+      font-weight: bold;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    input[type="radio"], input[type="checkbox"] {
+      width: auto;
+      margin-right: 5px;
+    }
+    button {
+      background: #ffcb05;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    button:hover {
+      background: #3b4cca;
+      color: white;
+    }
+    .char-count {
+      font-size: 12px;
+      color: gray;
+      text-align: right;
+    }
+    .error {
+      border-color: red !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Welcome to Professor Arjiannah’s Pokémon Lab! ⚡</h1>
+    <p style="text-align:center;">Please fill out this Trainer Registration Form to begin your Hoenn journey.</p>
+    <hr>
+
+    <h2>Trainer Registration Form 🎒</h2>
+
+    <form id="registrationForm">
+
+      <!-- Trainer Name -->
+      <label for="username">Trainer Name:</label>
+      <input type="text" id="username" name="username" placeholder="Enter trainer name" required>
+
+      <!-- PokéMail -->
+      <label for="email">PokéMail:</label>
+      <input type="email" id="email" name="email" placeholder="Enter email" required>
+
+      <!-- Password + Confirm -->
+      <label for="password">Trainer Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="button" id="togglePass">Show/Hide</button>
+
+      <label for="confirm">Confirm Password:</label>
+      <input type="password" id="confirm" name="confirm" required>
+
+      <!-- Gender -->
+      <label>Trainer Gender:</label>
+      <input type="radio" name="gender" value="male"> ♂ Male
+      <input type="radio" name="gender" value="female"> ♀ Female 
+
+      <!-- Preferred Type -->
+      <label>Preferred Pokémon Type:</label>
+      <input type="checkbox" name="interest" value="fire"> 🔥 Fire
+      <input type="checkbox" name="interest" value="water"> 💧 Water
+      <input type="checkbox" name="interest" value="grass"> 🌱 Grass
+      <input type="checkbox" name="interest" value="electric"> ⚡ Electric 
+
+      <!-- Region -->
+      <label for="region">Hoenn Location:</label>
+      <select id="region" name="region" required>
+        <option value="">--Choose your Hoenn location--</option>
+        <option value="hoenn">Hoenn (Main Region)</option>
+        <option value="littleroot">Littleroot Town</option>
+        <option value="petalburg">Petalburg City</option>
+        <option value="slateport">Slateport City</option>
+        <option value="mossdeep">Mossdeep City</option>
+        <option value="sootopolis">Sootopolis City</option>
+      </select>
+
+      <!-- Bio -->
+      <label for="bio">Trainer Bio:</label>
+      <textarea id="bio" name="bio" rows="3" maxlength="150" placeholder="Write something about your Pokémon journey..."></textarea>
+      <div class="char-count" id="charCount">0 / 150</div>
+
+      <!-- Submit -->
+      <button type="submit">Register as Trainer</button>
+    </form>
+  </div>
+
+  <script>
+    // Live character count
+    $("#bio").on("input", function() {
+      let count = $(this).val().length;
+      $("#charCount").text(count + " / 150");
+    });
+
+    // Toggle password
+    $("#togglePass").click(function() {
+      let field = $("#password");
+      if (field.attr("type") === "password") {
+        field.attr("type", "text");
+      } else {
+        field.attr("type", "password");
+      }
+    });
+
+    // Validation + alerts
+    $("#registrationForm").submit(function(e) {
+      e.preventDefault(); 
+      let valid = true;
+
+      // Check empty fields
+      $("#registrationForm input[required], #region").each(function() {
+        if ($(this).val().trim() === "") {
+          $(this).addClass("error");
+          valid = false;
+        } else {
+          $(this).removeClass("error");
+        }
+      });
+
+      // Password match
+      if ($("#password").val() !== $("#confirm").val()) {
+        alert("⚠ Your Trainer Passwords do not match!");
+        valid = false;
+      }
+
+      if (valid) {
+        alert("✅ Welcome to Professor Arjiannah’s Pokémon Lab! You are now registered as a Hoenn Trainer!");
+        this.reset();
+        $("#charCount").text("0 / 150");
+      } else {
+        alert("⚠ Please complete all required Trainer information.");
+      }
+    });
+  </script>
+
+</body>
+</html>
